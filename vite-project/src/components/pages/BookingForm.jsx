@@ -80,22 +80,48 @@ const BookingForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (unavailableSlots.includes(formData.time)) {
-      alert('This time slot is already booked. Please choose another.');
-      return;
-    }
-    
-    navigate('/booking-confirmation', { 
-      state: { 
-        booking: formData, 
-        facility,
-        sport,
-        total: parseInt(facility.price) * parseInt(formData.duration)
-      } 
-    });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (unavailableSlots.includes(formData.time)) {
+    alert('This time slot is already booked. Please choose another.');
+    return;
+  }
+
+  const bookingData = {
+    ...formData,
+    facility,
+    sport,
+    total: parseInt(facility.price) * parseInt(formData.duration)
   };
+
+  try {
+    const response = await fetch('http://localhost:5000/save-booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bookingData)
+    });
+
+    if (response.ok) {
+      navigate('/booking-confirmation', {
+        state: {
+          booking: formData,
+          facility,
+          sport,
+          total: parseInt(facility.price) * parseInt(formData.duration)
+        }
+      });
+    } else {
+      alert('خطأ أثناء تسجيل الحجز. حاول مرة أخرى.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('تعذر الاتصال بالسيرفر. تأكد أنه شغال.');
+  }
+};
+
 
   if (!facility) {
     return <div className="facility-not-found">Facility not found</div>;
@@ -139,6 +165,7 @@ const BookingForm = () => {
                       type="button"
                       key={slot}
                       className={`time-slot ${formData.time === slot ? 'selected' : ''} ${isUnavailable ? 'unavailable' : ''}`}
+
                       onClick={() => !isUnavailable && setFormData({ ...formData, time: slot })}
                       disabled={isUnavailable}
                     >

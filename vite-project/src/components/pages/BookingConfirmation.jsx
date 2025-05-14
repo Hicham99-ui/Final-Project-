@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaCheckCircle, FaCalendarAlt, FaClock, FaUser, FaPhone, FaCity, FaEnvelope } from 'react-icons/fa';
 
@@ -6,10 +7,15 @@ const BookingConfirmation = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   
+  useEffect(() => {
   if (!state?.booking || !state?.facility) {
     navigate('/');
-    return null;
   }
+}, [state, navigate]);
+
+if (!state?.booking || !state?.facility) {
+  return null; 
+}
 
   const { booking, facility, sport, total } = state;
   const sportNames = {
