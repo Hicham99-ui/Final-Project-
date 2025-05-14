@@ -6,12 +6,18 @@ const BookingConfirmation = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   
-  if (!state?.booking || !state?.court) {
+  if (!state?.booking || !state?.facility) {
     navigate('/');
     return null;
   }
 
-  const { booking, court, total } = state;
+  const { booking, facility, sport, total } = state;
+  const sportNames = {
+    football: 'Football Field',
+    basketball: 'Basketball Court',
+    swimming: 'Swimming Pool',
+    tennis: 'Tennis Court'
+  };
 
   return (
     <div className="confirmation-container">
@@ -19,7 +25,7 @@ const BookingConfirmation = () => {
         <div className="confirmation-header">
           <FaCheckCircle className="success-icon" />
           <h2>Booking Confirmed!</h2>
-          <p>Your reservation at {court.name} has been confirmed</p>
+          <p>Your reservation at {facility.name} has been confirmed</p>
         </div>
 
         <div className="booking-details">
@@ -43,7 +49,7 @@ const BookingConfirmation = () => {
           </div>
 
           <div className="detail-item">
-            <span><strong>Court:</strong> {court.name}</span>
+            <span><strong>Facility:</strong> {sportNames[sport]} - {facility.name}</span>
           </div>
 
           <div className="detail-item">

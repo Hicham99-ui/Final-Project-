@@ -54,7 +54,7 @@ const SwimPage = () => {
                 </p>
               </div>
               <div className="pool-actions">
-                <Link to={`/book/${pool.id}`} className="book-button">
+                <Link to={`/book/swimming/${pool.id}`} className="book-button">
                   <FaCalendarAlt className="button-icon" />
                   Book Now
                 </Link>

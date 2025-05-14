@@ -23,13 +23,13 @@ const Services = () => {
 
         <div className="services-features">
           <div className="feature-card">
-            <div className="feature-icon">⏱️</div>
+            <div className="feature-icon1">⏱️</div>
             <h3>Real-Time Booking</h3>
             <p>Check availability and reserve instantly with our live scheduling system</p>
           </div>
           
           <div className="feature-card">
-            <div className="feature-icon">📱</div>
+            <div className="feature-icon1">📱</div>
             <h3>Mobile Friendly</h3>
             <p>Book from anywhere using any device with our responsive platform</p>
           </div>

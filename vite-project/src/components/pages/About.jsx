@@ -53,17 +53,17 @@ const About = () => {
           <h2>Meet The Team</h2>
           <div className='team-grid'>
             <div className='team-member'>
-              {/* <div className='member-photo'></div> */}
+              <div className='member-photo'></div>
               <h3>Mohamed Amalki</h3>
               <p>Facility Director</p>
             </div>
             <div className='team-member'>
-              {/* <div className='member-photo'></div> */}
-              <h3>Hicham Wahbi</h3>
+              <div className='member-photo'></div>
+              <h3>Youssef Oukni</h3>
               <p>Head of Operations</p>
             </div>
             <div className='team-member'>
-              {/* <div className='member-photo'></div> */}
+              <div className='member-photo'></div>
               <h3>Ayman Cherqaoui</h3>
               <p>Sports Coordinator</p>
             </div>
