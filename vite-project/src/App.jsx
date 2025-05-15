@@ -18,6 +18,7 @@ import TennisCourtDetails from './components/pages/Tennis/TennisCourtDetails';
 import SwimmingPoolDetails from './components/pages/Swim/SwimmingPoolDetails';
 import BookingForm from './components/pages/BookingForm';
 import BookingConfirmation from './components/pages/BookingConfirmation';
+import AdminBookings from './components/pages/Admin';
 // import SwimmingBookingForm from './components/pages/Swim/SwimmingBookingForm';
 
 
@@ -47,7 +48,7 @@ function App() {
                         <Route path="/book/:sport/:id" element={<BookingForm />} />
                         <Route path="/booking-confirmation" element={<BookingConfirmation />} />
 
-                         
+                         <Route path="/admin" element={<AdminBookings />} />
                       </Routes>
       
       <MyFooter />

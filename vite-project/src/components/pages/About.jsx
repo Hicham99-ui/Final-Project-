@@ -1,4 +1,8 @@
 import React from 'react';
+import med from '../../assets/med.jpg'
+import youssef from '../../assets/youssef.jpg'
+import hicham from '../../assets/tech.jpg'
+import ayman from '../../assets/ayman.jpeg'
 
 const About = () => {
   return (
@@ -53,17 +57,22 @@ const About = () => {
           <h2>Meet The Team</h2>
           <div className='team-grid'>
             <div className='team-member'>
-              <div className='member-photo'></div>
+              <div className='member-photo'><img  className='member-photo'src={hicham} alt="" srcset="" /></div>
+              <h3>Hicham wahbi</h3>
+              <p>Project Owner</p>
+            </div>
+            <div className='team-member'>
+              <div className='member-photo'><img  className='member-photo'src={med} alt="" srcset="" /></div>
               <h3>Mohamed Amalki</h3>
               <p>Facility Director</p>
             </div>
             <div className='team-member'>
-              <div className='member-photo'></div>
+              <div className='member-photo'><img className='member-photo'src={youssef} alt="" srcset="" /></div>
               <h3>Youssef Oukni</h3>
               <p>Head of Operations</p>
             </div>
             <div className='team-member'>
-              <div className='member-photo'></div>
+              <div className='member-photo'><img  className='member-photo'src={ayman} alt="" srcset="" /></div>
               <h3>Ayman Cherqaoui</h3>
               <p>Sports Coordinator</p>
             </div>
