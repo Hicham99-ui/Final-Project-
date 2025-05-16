@@ -74,13 +74,10 @@ const AdminBookings = () => {
       
       <div className="admin-controls">
         <div className="search-box">
-          <FaSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search by name, phone, or email"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          
+          
+            {(e) => setSearchTerm(e.target.value)}
+          
         </div>
         
         <div className="filter-options">
@@ -146,15 +143,10 @@ const AdminBookings = () => {
                   <td>{booking.total} dh</td>
                   <td>
                     <div className="action-buttons">
-                      <button 
-                        className="edit-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          // Handle edit
-                        }}
-                      >
-                        <FaEdit />
-                      </button>
+                      
+                
+                        
+                  
                       <button 
                         className="delete-btn"
                         onClick={(e) => {
