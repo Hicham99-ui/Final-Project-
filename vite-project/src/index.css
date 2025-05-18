@@ -16,12 +16,35 @@
      margin: 0 auto;
 }
  .logo {
-     color: #2c3e50;
-     font-size: 1.8rem;
-     font-weight: 700;
-     margin: 0;
-     text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Arial', sans-serif;
+  color: black;
 }
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.text h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+
 
 .nav-links {
   font-family: 'Inter', sans-serif;
@@ -31,55 +54,56 @@
 
 .nav-links {
   display: flex;
-  gap: 2rem; /* Spacing between links */
+  gap: 2rem; /* Consistent spacing */
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif; /* Professional font */
 }
 
-.nav-links li a {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  color: #333; /* Dark gray (adjust to your theme) */
+.nav-links li {
+  position: relative;
+}
+
+.nav-links a {
+  color: #333; /* Dark gray for readability */
   text-decoration: none;
-  transition: color 0.3s ease;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.nav-links li a:hover {
-  color: #2E8B57; /* Hover color (e.g., green) */
+/* Hover Effect: Underline animation */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #2E8B57; /* Accent color (green) */
+  transition: width 0.3s ease;
 }
 
-/* Active link styling */
-.nav-links li a.active {
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a:hover {
+  color: #2E8B57; /* Match underline color */
+}
+
+/* Active Link Style */
+.nav-links a.active {
+  color: #2E8B57;
   font-weight: 600;
-  border-bottom: 2px solid #2E8B57;
 }
- .auth-buttons {
-     display: flex;
-     gap: 1rem;
-}
- .login-btn, .signup-btn {
-     padding: 0.6rem 1.2rem;
-     border-radius: 4px;
-     font-weight: 500;
-     text-decoration: none;
-     transition: all 0.3s ease;
-}
- .login-btn {
-     color: #3498db;
-     border: 1px solid #3498db;
-}
- .login-btn:hover {
-     background-color: #f0f8ff;
-}
- .signup-btn {
-     background-color: #3498db;
-     color: white;
-     border: 1px solid #3498db;
-}
- .signup-btn:hover {
-     background-color: #2980b9;
-     border-color: #2980b9;
+
+.nav-links a.active::after {
+  width: 100%; /* Show underline for active page */
 }
 /* Responsive design */
  @media (max-width: 768px) {
@@ -2316,4 +2340,42 @@
 
 .error {
   color: #f44336;
+}
+.logo-pro-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.logo-pro-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.logo-pro-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.logo-pro-name {
+  font-weight: 700;
+  font-size: 26px;
+  color: #111827; /* Dark Gray (Professional) */
+  letter-spacing: -0.5px;
+}
+
+.logo-pro-tagline {
+  font-weight: 400;
+  font-size: 16px;
+  color: #6B7280; /* Subtle Gray */
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* Optional: Animation on hover */
+.logo-pro-container:hover .logo-pro-icon {
+  transform: rotate(5deg);
+  transition: transform 0.3s ease;
 }
