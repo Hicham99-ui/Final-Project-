@@ -1,21 +1,21 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaCheckCircle, FaCalendarAlt, FaClock, FaUser, FaPhone, FaCity, FaEnvelope } from 'react-icons/fa';
+import { FaCheckCircle, FaCalendarAlt, FaClock, FaUser, FaPhone, FaCity, FaEnvelope, FaPrint } from 'react-icons/fa';
 
 const BookingConfirmation = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   
   useEffect(() => {
-  if (!state?.booking || !state?.facility) {
-    navigate('/');
-  }
-}, [state, navigate]);
+    if (!state?.booking || !state?.facility) {
+      navigate('/');
+    }
+  }, [state, navigate]);
 
-if (!state?.booking || !state?.facility) {
-  return null; 
-}
+  if (!state?.booking || !state?.facility) {
+    return null; 
+  }
 
   const { booking, facility, sport, total } = state;
   const sportNames = {
@@ -23,6 +23,10 @@ if (!state?.booking || !state?.facility) {
     basketball: 'Basketball Court',
     swimming: 'Swimming Pool',
     tennis: 'Tennis Court'
+  };
+
+  const handlePrint = () => {
+    window.print();
   };
 
   return (
@@ -83,9 +87,14 @@ if (!state?.booking || !state?.facility) {
           </div>
         </div>
 
-        <button onClick={() => navigate('/')} className="home-button">
-          Back to Home
-        </button>
+        <div className="button-group">
+          <button onClick={() => navigate('/')} className="home-button">
+            Back to Home
+          </button>
+          <button onClick={handlePrint} className="print-button">
+            <FaPrint /> Print Confirmation
+          </button>
+        </div>
       </div>
     </div>
   );

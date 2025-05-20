@@ -4,7 +4,7 @@ import { FaStar, FaMapMarkerAlt, FaUsers, FaCalendarAlt, FaFootballBall, FaShowe
 import { IoIosPeople } from 'react-icons/io';
 import { MdOutlineSportsSoccer } from 'react-icons/md';
 import Terrain1 from './Terrain1.jpg';
-import Terrain2 from './Terrain2.jpeg';
+import Terrain2 from './Terrain2.jpg';
 import Terrain3 from './Terrain3.jpg';
 import Terrain4 from './Terrain4.jpg';
 
@@ -21,7 +21,7 @@ const TerrainDetails = () => {
       name: "Stade Salam",
       location: "Hay Salam",
       rating: 4.8,
-      capacity: "11v11",
+      capacity: "6v6",
       price: "150 dh/hr",
       description: "Professional-grade football stadium with FIFA-certified artificial turf. Perfect for official matches and serious training sessions. The field is well-maintained with proper markings and high-quality goals.",
       size: "105m x 68m (Standard)",
@@ -108,7 +108,7 @@ const TerrainDetails = () => {
       name: "Ait Melloul Complex",
       location: "Ait Melloul",
       rating: 4.9,
-      capacity: "5v5",
+      capacity: "8v8",
       price: "200 dh/hr",
       description: "Premium 5-a-side football complex with state-of-the-art facilities. Features a covered playing area making it perfect for all weather conditions. Popular for corporate tournaments.",
       size: "40m x 20m (5-a-side)",

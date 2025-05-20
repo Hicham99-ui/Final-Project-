@@ -56,7 +56,7 @@ const SwimPage = () => {
               <div className="pool-actions">
                 <Link to={`/book/swimming/${pool.id}`} className="book-button">
                   <FaCalendarAlt className="button-icon" />
-                  Book Now
+                  Book (Réservez)
                 </Link>
                 <Link to={`/swimming/details/${pool.id}`} className="details-button">
                   View Details

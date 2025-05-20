@@ -1,0 +1,84 @@
+[
+  {
+    "fullName": "HICHAM WAHBI",
+    "phone": "0634513366",
+    "city": "Agadir",
+    "email": "hichamwahbi0111@gmail.com",
+    "date": "2025-05-19T23:00:00.000Z",
+    "time": "08:00",
+    "duration": "1",
+    "notes": "h",
+    "facility": {
+      "id": 1,
+      "name": "Stade Salam",
+      "price": "150 dh/hr"
+    },
+    "sport": "Football",
+    "total": 150,
+    "blockedSlots": [
+      "08:00"
+    ]
+  },
+  {
+    "fullName": "HICHAM WAHBI",
+    "phone": "0634513366",
+    "city": "Agadir",
+    "email": "hichamwahbi0111@gmail.com",
+    "date": "2025-05-28T23:00:00.000Z",
+    "time": "09:00",
+    "duration": "2",
+    "notes": "h",
+    "facility": {
+      "id": 1,
+      "name": "Stade Salam",
+      "price": "150 dh/hr"
+    },
+    "sport": "Football",
+    "total": 300,
+    "blockedSlots": [
+      "09:00",
+      "10:00"
+    ]
+  },
+  {
+    "fullName": "jamal wahbi",
+    "phone": "0634513366",
+    "city": "Agadir",
+    "email": "hichamwahbi0111@gmail.com",
+    "date": "2025-05-21T23:00:00.000Z",
+    "time": "09:00",
+    "duration": "2",
+    "notes": "b",
+    "facility": {
+      "id": 2,
+      "name": "Tilila Arena",
+      "price": "100 dh/hr"
+    },
+    "sport": "Football",
+    "total": 200,
+    "blockedSlots": [
+      "09:00",
+      "10:00"
+    ]
+  },
+  {
+    "fullName": "toufik wahbi",
+    "phone": "0634513366",
+    "city": "Agadir",
+    "email": "hichamwahbi0111@gmail.com",
+    "date": "2025-05-21T23:00:00.000Z",
+    "time": "21:00",
+    "duration": "1",
+    "notes": "b",
+    "facility": {
+      "id": 2,
+      "name": "Tilila Arena",
+      "price": "100 dh/hr"
+    },
+    "sport": "Football",
+    "total": 100,
+    "blockedSlots": [
+      "21:00"
+    ]
+  }
+]

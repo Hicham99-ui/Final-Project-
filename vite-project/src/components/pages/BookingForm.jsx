@@ -7,8 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 const BookingForm = () => {
   const { sport, id } = useParams();
   const navigate = useNavigate();
-  
-  // Mock data - replace with your actual data fetching
+
   const facilities = {
     Football: [
       { id: 1, name: "Stade Salam", price: "150 dh/hr" },
@@ -44,84 +43,115 @@ const BookingForm = () => {
   });
 
   const [unavailableSlots, setUnavailableSlots] = useState([]);
+  const [blockedSlots, setBlockedSlots] = useState([]); // Track currently selected slots
   const [isLoading, setIsLoading] = useState(false);
 
-  // Time slots available for booking
   const timeSlots = [
-    '08:00', '09:00', '10:00', '11:00', '12:00',
+     '09:00', '10:00', '11:00', '12:00',
     '13:00', '14:00', '15:00', '16:00', '17:00',
-    '18:00', '19:00', '20:00', '21:00'
+    '18:00', '19:00', '20:00', '21:00', '22:00', '23:00' ,'00:00'
   ];
 
-  // Fetch unavailable slots when date is selected
+  // Extract numeric price (e.g., "150 dh/hr" → 150)
+  const priceValue = facility ? parseInt(facility.price.match(/\d+/)[0]) : 0;
+
   useEffect(() => {
     if (formData.date) {
       setIsLoading(true);
-      // Simulate API call
-      setTimeout(() => {
-        // Mock data - replace with actual API call
-        const mockUnavailable = {
-          football: { 1: ['10:00', '14:00'], 2: ['09:00', '15:00'] },
-          basketball: { 1: ['11:00', '16:00'], 2: ['13:00', '18:00'] },
-          swimming: { 1: ['09:00', '12:00'] },
-          tennis: { 1: ['10:00', '15:00'], 2: ['11:00', '16:00'], 3: ['09:00', '14:00'] }
-        };
-        
-        
-        const slots = mockUnavailable[sport]?.[id] || [];
-        setUnavailableSlots(slots);
-        setIsLoading(false);
-      }, 500);
+
+      const fetchUnavailable = async () => {
+        try {
+          const formattedDate = formData.date.toISOString().split('T')[0];
+          const response = await fetch(
+            `http://localhost:5000/api/bookings?facilityId=${id}&sport=${sport}&date=${formattedDate}`
+          );
+          const data = await response.json();
+          const allBooked = data.flatMap(booking => {
+            const startIndex = timeSlots.indexOf(booking.time);
+            return Array.from({ length: parseInt(booking.duration) }, (_, i) => timeSlots[startIndex + i]).filter(Boolean);
+          });
+          setUnavailableSlots(allBooked);
+        } catch (error) {
+          console.error('Error fetching bookings:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchUnavailable();
     }
   }, [formData.date, sport, id]);
+
+  // Update blocked slots when time/duration changes
+  useEffect(() => {
+  if (formData.time && formData.duration) {
+    const startIndex = timeSlots.indexOf(formData.time);
+    const newBlockedSlots = timeSlots.slice(
+      startIndex, 
+      startIndex + parseInt(formData.duration)
+    );
+    setBlockedSlots(newBlockedSlots);
+  } else {
+    setBlockedSlots([]);
+  }
+}, [formData.time, formData.duration]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (unavailableSlots.includes(formData.time)) {
-    alert('This time slot is already booked. Please choose another.');
-    return;
-  }
-
-  const bookingData = {
-    ...formData,
-    facility,
-    sport,
-    total: parseInt(facility.price) * parseInt(formData.duration)
+  const handleDateChange = (date) => {
+    setFormData({ ...formData, date, time: '' });
+    setBlockedSlots([]); // Reset blocked slots when date changes
   };
 
-  try {
-    const response = await fetch('http://localhost:5000/save-booking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(bookingData)
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    if (response.ok) {
-      navigate('/booking-confirmation', {
-        state: {
-          booking: formData,
-          facility,
-          sport,
-          total: parseInt(facility.price) * parseInt(formData.duration)
-        }
-      });
-    } else {
-      alert('خطأ أثناء تسجيل الحجز. حاول مرة أخرى.');
+    const startIndex = timeSlots.indexOf(formData.time);
+    const selectedSlots = Array.from({ length: parseInt(formData.duration) }, (_, i) => timeSlots[startIndex + i]);
+    const conflict = selectedSlots.some(slot => unavailableSlots.includes(slot));
+
+    if (conflict) {
+      alert('One or more of the selected time slots are already booked. Please choose another time.');
+      return;
     }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('تعذر الاتصال بالسيرفر. تأكد أنه شغال.');
-  }
-};
 
+    const bookingData = {
+      ...formData,
+      facility,
+      sport,
+      total: priceValue * parseInt(formData.duration),
+      blockedSlots: selectedSlots
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/save-booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bookingData)
+      });
+
+      if (response.ok) {
+        navigate('/booking-confirmation', {
+          state: {
+            booking: formData,
+            facility,
+            sport,
+            total: priceValue * parseInt(formData.duration)
+          }
+        });
+      } else {
+        alert('Error while saving booking. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Could not connect to the server. Please check your connection.');
+    }
+  };
 
   if (!facility) {
     return <div className="facility-not-found">Facility not found</div>;
@@ -140,12 +170,12 @@ const handleSubmit = async (e) => {
       <form onSubmit={handleSubmit} className="booking-form">
         <div className="form-section">
           <h3><FaCalendarAlt /> Select Date & Time</h3>
-          
+
           <div className="date-picker-container">
             <label>Date</label>
             <DatePicker
               selected={formData.date}
-              onChange={(date) => setFormData({ ...formData, date, time: '' })}
+              onChange={handleDateChange}
               minDate={new Date()}
               dateFormat="MMMM d, yyyy"
               placeholderText="Select a date"
@@ -158,22 +188,41 @@ const handleSubmit = async (e) => {
             <div className="time-selection">
               <label>Time Slot {isLoading && '(Checking availability...)'}</label>
               <div className="time-slots">
-                {timeSlots.map(slot => {
-                  const isUnavailable = unavailableSlots.includes(slot);
-                  return (
-                    <button
-                      type="button"
-                      key={slot}
-                      className={`time-slot ${formData.time === slot ? 'selected' : ''} ${isUnavailable ? 'unavailable' : ''}`}
+              {timeSlots.map((slot, index) => {
+  const duration = parseInt(formData.duration);
+  const nextSlots = timeSlots.slice(index, index + duration);
 
-                      onClick={() => !isUnavailable && setFormData({ ...formData, time: slot })}
-                      disabled={isUnavailable}
-                    >
-                      {slot}
-                      {isUnavailable && <span className="unavailable-badge">Booked</span>}
-                    </button>
-                  );
-                })}
+  // Check ONLY if the CURRENT slot is unavailable (not the entire range)
+  const isUnavailable = unavailableSlots.includes(slot);
+
+  // Check if this slot is part of the CURRENTLY SELECTED booking
+  const isPartOfCurrentSelection = 
+    formData.time && 
+    blockedSlots.includes(slot);
+
+  return (
+    <button
+      type="button"
+      key={slot}
+      className={`time-slot 
+        ${formData.time === slot ? 'selected' : ''} 
+        ${isUnavailable || isPartOfCurrentSelection ? 'unavailable' : ''}
+      `}
+      onClick={() => {
+        if (!isUnavailable) {
+          setFormData({ ...formData, time: slot });
+        }
+      }}
+      disabled={isUnavailable || isPartOfCurrentSelection}
+    >
+      {slot}
+      {isUnavailable && <span className="unavailable-badge">Booked</span>}
+      {isPartOfCurrentSelection && !isUnavailable && (
+        <span className="unavailable-badge"></span>
+      )}
+    </button>
+  );
+})}
               </div>
             </div>
           )}
@@ -197,7 +246,7 @@ const handleSubmit = async (e) => {
 
         <div className="form-section">
           <h3>Your Information</h3>
-          
+
           <div className="form-group">
             <label><FaUser /> Full Name</label>
             <input

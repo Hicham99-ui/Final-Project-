@@ -1,89 +1,54 @@
 const express = require('express');
-const fs = require('fs');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+const fs = require('fs').promises;
 const path = require('path');
 
 const app = express();
-const PORT = 5000;
-
-// Create myData.json if it doesn't exist
-const dataFilePath = path.join(__dirname, 'myData.json');
-if (!fs.existsSync(dataFilePath)) {
-  fs.writeFileSync(dataFilePath, '[]');
-}
-
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-// Save new booking
-app.post('/save-booking', (req, res) => {
+// Endpoint to check availability
+app.get('/api/bookings', async (req, res) => {
   try {
-    const newBooking = {
-      ...req.body,
-      id: Date.now(), // Add unique ID
-      bookedAt: new Date().toISOString()
-    };
+    const { facilityId, sport, date } = req.query;
+    const dataPath = path.join(__dirname, 'data.json');
+    const data = await fs.readFile(dataPath, 'utf8');
+    const bookings = JSON.parse(data);
 
-    const rawData = fs.readFileSync(dataFilePath);
-    const bookings = JSON.parse(rawData);
-    
-    // Check for duplicate bookings
-    const isAlreadyBooked = bookings.some(booking => 
-      booking.sport === newBooking.sport &&
-      booking.facilityId === newBooking.facilityId &&
-      booking.date === newBooking.date &&
-      booking.time === newBooking.time
+    const filtered = bookings.filter(booking => 
+      booking.facility.id === parseInt(facilityId) &&
+      booking.sport.toLowerCase() === sport.toLowerCase() &&
+      new Date(booking.date).toISOString().split('T')[0] === date
     );
 
-    if (isAlreadyBooked) {
-      return res.status(400).json({ error: 'This time slot is already booked' });
+    res.json(filtered);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch bookings" });
+  }
+});
+
+app.listen(5000, () => console.log('Backend running on http://localhost:5000'));
+app.post('/save-booking', async (req, res) => {
+  try {
+    const newBooking = req.body;
+    const dataPath = path.join(__dirname, 'data.json');
+
+    // Check if file exists, else create it
+    let bookings = [];
+    try {
+      const data = await fs.readFile(dataPath, 'utf8');
+      bookings = JSON.parse(data);
+    } catch (err) {
+      // إذا الملف ما كاينش، نخليه فارغ
+      console.log('No existing bookings, creating new file.');
     }
 
     bookings.push(newBooking);
-    fs.writeFileSync(dataFilePath, JSON.stringify(bookings, null, 2));
-    
-    res.status(201).json({ message: 'Booking saved successfully!', booking: newBooking });
+    await fs.writeFile(dataPath, JSON.stringify(bookings, null, 2));
+
+    res.status(201).json({ message: 'Booking saved successfully!' });
   } catch (error) {
-    console.error('Error saving booking:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ error: 'Failed to save booking' });
   }
-});
-
-// Check available time slots
-app.get('/check-availability', (req, res) => {
-  try {
-    const { sport, facilityId, date } = req.query;
-    const rawData = fs.readFileSync(dataFilePath);
-    const bookings = JSON.parse(rawData);
-
-    const bookedSlots = bookings
-      .filter(booking => 
-        booking.sport === sport &&
-        booking.facilityId === facilityId &&
-        booking.date.split('T')[0] === date
-      )
-      .map(booking => booking.time);
-
-    res.status(200).json({ bookedSlots });
-  } catch (error) {
-    console.error('Error checking availability:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Get all bookings (for admin view)
-app.get('/bookings', (req, res) => {
-  try {
-    const rawData = fs.readFileSync(dataFilePath);
-    const bookings = JSON.parse(rawData);
-    res.status(200).json(bookings);
-  } catch (error) {
-    console.error('Error fetching bookings:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
 });

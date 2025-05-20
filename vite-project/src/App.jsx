@@ -49,6 +49,7 @@ function App() {
                         <Route path="/booking-confirmation" element={<BookingConfirmation />} />
 
                          <Route path="/admin" element={<AdminBookings />} />
+                         
                       </Routes>
       
       <MyFooter />

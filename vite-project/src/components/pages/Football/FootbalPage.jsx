@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Terrain1 from './Terrain1.jpg';
-import Terrain2 from './Terrain2.jpeg';
+import Terrain2 from './Terrain2.jpg';
 import Terrain3 from './/Terrain3.jpg';
 import Terrain4 from './Terrain4.jpg';
 import { FaStar, FaMapMarkerAlt, FaUsers, FaCalendarAlt } from 'react-icons/fa';
@@ -15,7 +15,7 @@ const FootbalPage = () => {
       name: "Stade Salam",
       location: "Hay Salam",
       rating: 4.8,
-      capacity: "11v11",
+      capacity: "6v6",
       price: "150 dh/hr"
     },
     {
@@ -33,7 +33,7 @@ const FootbalPage = () => {
       name: "Ait Melloul Complex",
       location: "Ait Melloul",
       rating: 4.9,
-      capacity: "5v5",
+      capacity: "8v8",
       price: "200 dh/hr"
     },
     {
@@ -42,7 +42,7 @@ const FootbalPage = () => {
       name: "Tikiouin Stadium",
       location: "Tikiouin",
       rating: 4.7,
-      capacity: "9v9",
+      capacity: "6v6",
       price: "100 dh/hr"
     }
   ];
@@ -85,7 +85,7 @@ const FootbalPage = () => {
               <div className="terrain-actions">
                 <Link to={`/book/Football/${terrain.id}`} className="book-button">
                   <FaCalendarAlt className="button-icon" />
-                  Book Now
+                  Book (Réservez)
                 </Link>
                 <Link to={`/details/Football/${terrain.id}`} className="details-button">
                   View Details

@@ -77,7 +77,7 @@ const TennisPage = () => {
               <div className="court-actions">
                 <Link to={`/book/tennis/${court.id}`} className="book-button">
                   <FaCalendarAlt className="button-icon" />
-                  Book Now
+                  Book (Réservez)
                 </Link>
                 <Link to={`/details/tennis/${court.id}`} className="details-button">
                   View Details

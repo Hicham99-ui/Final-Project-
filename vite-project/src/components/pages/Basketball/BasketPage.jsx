@@ -67,7 +67,7 @@ const BasketPage = () => {
               <div className="court-actions">
                 <Link to={`/book/basketball/${court.id}`} className="book-button">
                   <FaCalendarAlt className="button-icon" />
-                  Book Now
+                  Book (Réservez)
                 </Link>
                 <Link to={`/details/basketball/${court.id}`} className="details-button">
                   View Details 
