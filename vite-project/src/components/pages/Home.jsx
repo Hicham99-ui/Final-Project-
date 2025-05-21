@@ -6,18 +6,20 @@ import Tennis from '../../assets/TennisImg.jpg';
 import Basket from '../../assets/BasketImg.jpg';
 import Swim from '../../assets/SwimImg.jpg';
 import { FaStar, FaCalendarAlt, FaUsers, FaRegClock } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+
 
 const Home = () => {
   const facilities = [
     {
       id: 1,
       image: Football,
-      title: "Football Stadium 6/6",
+      title: "Football Stadium ",
       description: "Modern field with high-quality synthetic grass, perfect for matches or tournaments. Available day and night with lighting and changing rooms.",
       features: [
         { icon: <FaStar />, text: "Professional Grade" },
         { icon: <FaCalendarAlt />, text: "Easy Booking" },
-        { icon: <FaUsers />, text: "Up to 22 players" }
+        { icon: <FaUsers />, text: "Up to 16 players" }
       ],
       link: "/FootbalPage"
     },
@@ -58,6 +60,8 @@ const Home = () => {
       link: "/Swim"
     }
   ];
+  
+  const navigate = useNavigate()
 
   return (
     <div className='home-container'>
@@ -69,7 +73,7 @@ const Home = () => {
 
       <div className="facilities-grid">
         {facilities.map((facility) => (
-          <div className="facility-card" key={facility.id}>
+          <div className="facility-card" key={facility.id}  onClick={() => navigate(facility.link)}>
             <div className="card-image">
               <img src={facility.image} alt={facility.title} />
               <div className="image-overlay"></div>
@@ -111,6 +115,7 @@ const Home = () => {
     </div>
 
   );
+
 };
 
 export default Home;

@@ -39,7 +39,6 @@ app.post('/save-booking', async (req, res) => {
       const data = await fs.readFile(dataPath, 'utf8');
       bookings = JSON.parse(data);
     } catch (err) {
-      // إذا الملف ما كاينش، نخليه فارغ
       console.log('No existing bookings, creating new file.');
     }
 
@@ -50,5 +49,59 @@ app.post('/save-booking', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to save booking' });
+  }
+});
+// Add these to your existing backend (after the other endpoints)
+
+// Get all bookings
+app.get('/api/admin/bookings', async (req, res) => {
+  try {
+    const dataPath = path.join(__dirname, 'data.json');
+    const data = await fs.readFile(dataPath, 'utf8');
+    const bookings = JSON.parse(data);
+    
+    // Sort by date (newest first)
+    bookings.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch bookings" });
+  }
+});
+
+// Optional: Add authentication middleware
+const authenticateAdmin = (req, res, next) => {
+  // Implement your authentication logic here
+  // For example, check for admin token or session
+  next();
+};
+// Add this to your backend (server.js)
+app.delete('/api/admin/bookings/:id', async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+    const dataPath = path.join(__dirname, 'data.json');
+    const data = await fs.readFile(dataPath, 'utf8');
+    let bookings = JSON.parse(data);
+    
+    // Find index of booking to delete
+    const bookingIndex = bookings.findIndex(
+      booking => booking._id === bookingId || 
+               (booking.facility && booking.facility.id && booking.date && booking.time && 
+                `${booking.facility.id}-${booking.date}-${booking.time}` === bookingId)
+    );
+    
+    if (bookingIndex === -1) {
+      return res.status(404).json({ error: "Booking not found" });
+    }
+    
+    // Remove the booking
+    bookings.splice(bookingIndex, 1);
+    
+    // Save updated data
+    await fs.writeFile(dataPath, JSON.stringify(bookings, null, 2));
+    
+    res.json({ message: 'Booking deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete booking" });
   }
 });

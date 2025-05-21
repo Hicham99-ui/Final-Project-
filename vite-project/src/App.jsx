@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css'
-// import Navbar from './components/Navbar';
+
 import MyFooter from './components/MyFooter';
 import { Route,Routes } from 'react-router-dom';
 import FootbalPage from './components/pages/Football/FootbalPage';
@@ -8,18 +8,17 @@ import BasketPage from './components/pages/Basketball/BasketPage';
 import TennisPage from './components/pages/Tennis/Tennispage';
 import SwimPage from './components/pages/Swim/SwimPage';
 import TerrainDetails from './components/pages/Football/TerrainDetails';
-// import BookingForm from './components/pages/Football/BookingForm';
-// import ConfirmationPage from './components/pages/Football/ConfirmationPage';
 import BasketballCourtDetails from './components/pages/Basketball/BasketballCourtDetails';
-// import BasketballBookingForm from './components/pages/Basketball/BasketballBookingForm';
-// import BookingConfirmation from './components/pages/Basketball/BookingConfirmation';
 import TennisCourtDetails from './components/pages/Tennis/TennisCourtDetails';
-// import TennisBookingForm from './components/pages/Tennis/TennisBookingForm';
 import SwimmingPoolDetails from './components/pages/Swim/SwimmingPoolDetails';
 import BookingForm from './components/pages/BookingForm';
 import BookingConfirmation from './components/pages/BookingConfirmation';
-import AdminBookings from './components/pages/Admin';
-// import SwimmingBookingForm from './components/pages/Swim/SwimmingBookingForm';
+import AdminDashboard from './components/pages/AdminDashboard';
+
+
+
+
+;
 
 
 
@@ -47,8 +46,8 @@ function App() {
                         
                         <Route path="/book/:sport/:id" element={<BookingForm />} />
                         <Route path="/booking-confirmation" element={<BookingConfirmation />} />
-
-                         <Route path="/admin" element={<AdminBookings />} />
+                      
+                      <Route path="/admin" element={<AdminDashboard />} />
                          
                       </Routes>
       
